@@ -35,7 +35,15 @@ def drop[A](l: List[A], n: Int): List[A] = {
   loop(l,0)
 }
 
-println(drop(List(4,5,6,7),2))
+def dropWhile[A](l: List[A], f: A => Boolean): List[A] =  
+  l match {
+      case Cons(h,t) if f(h) => dropWhile(t, f)
+      case _ => l
+    }
+
+
+
+println(dropWhile(List(4,5,6,7,8),(a: Int)=> a % 2 == 0))
 
 
 
