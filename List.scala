@@ -54,5 +54,8 @@ def foldRight[A,B](l: List[A], i: B)(f: (A,B) => B): B = l match {
   case Cons(h,t) => f(h , foldRight(t,i)(f)) 
 }
 // println( foldRight(List(1,2,3), 1) ( _ * _))
+// println(foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_)))
 
+def length[A](as: List[A]): Int = foldRight(as,0)((_,b) => b +1)
 
+println(length(List(1,2,3)))
