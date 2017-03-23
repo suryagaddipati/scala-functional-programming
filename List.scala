@@ -26,8 +26,13 @@ def tail[A](as : List[A]): List[A] = as match{
   case Cons(x,Nil) => List(x)
   case Cons(_,tail) => tail
 }
+def setHead[A](a: A , as: List[A]): List[A] = as match{
+  case Nil => Nil
+  case Cons(x,Nil) => List(a)
+  case Cons(_,tail) => Cons(a,tail)
+}
 
-println(tail(List(1)))
+println(setHead(2, List(4,5)))
 
 
 
