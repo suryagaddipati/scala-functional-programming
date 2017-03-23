@@ -70,4 +70,7 @@ def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = {
   loop(as,z)
 }
 
-println( foldLeft(List(1,2,3), 1) ( _ * _))
+// println( foldLeft(List(1,2,3), 1) ( _ * _))
+def reverse[A](l: List[A]): List[A]  = foldLeft(l, Nil:List[A])((t, h) => Cons(h,t))
+
+ println(reverse(List(1,2,3)))
