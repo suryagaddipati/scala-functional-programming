@@ -23,16 +23,19 @@ def sum(as: List[Int]): Int = as match {
 
 def tail[A](as : List[A]): List[A] = as match{
   case Nil => Nil
-  case Cons(x,Nil) => List(x)
   case Cons(_,tail) => tail
 }
 def setHead[A](a: A , as: List[A]): List[A] = as match{
   case Nil => Nil
-  case Cons(x,Nil) => List(a)
   case Cons(_,tail) => Cons(a,tail)
 }
 
-println(setHead(2, List(4,5)))
+def drop[A](l: List[A], n: Int): List[A] = {
+  def loop(o: List[A], c:Int): List[A] = if(c>=n)  o else loop(tail(o),c +1)
+  loop(l,0)
+}
+
+println(drop(List(4,5,6,7),2))
 
 
 
