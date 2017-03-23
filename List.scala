@@ -58,4 +58,16 @@ def foldRight[A,B](l: List[A], i: B)(f: (A,B) => B): B = l match {
 
 def length[A](as: List[A]): Int = foldRight(as,0)((_,b) => b +1)
 
-println(length(List(1,2,3)))
+// println(length(List(1,2,3)))
+//
+
+def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = {
+  @annotation.tailrec
+  def loop(l: List[A], z: B): B = l match {
+    case Nil => z
+    case Cons(h,t) => loop(t, f(z,h))
+  }
+  loop(as,z)
+}
+
+println( foldLeft(List(1,2,3), 1) ( _ * _))
