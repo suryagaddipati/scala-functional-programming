@@ -47,7 +47,12 @@ def init[A](l: List[A]): List[A] = l match{
   case Cons(_,Nil) => Nil
   case Cons(h,t) => Cons(h, init(t))
 }
-println(init(List(4,5,6,7,8)))
+// println(init(List(4,5,6,7,8)))
 
+def foldRight[A,B](l: List[A], i: B)(f: (A,B) => B): B = l match {
+  case Nil => i
+  case Cons(h,t) => f(h , foldRight(t,i)(f)) 
+}
+// println( foldRight(List(1,2,3), 1) ( _ * _))
 
 
