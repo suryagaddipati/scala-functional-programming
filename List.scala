@@ -112,4 +112,13 @@ def filter[A](as: List[A])(f: A => Boolean): List[A] = as match{
   case Cons(h,t) => if(f(h)) Cons(h,filter(t)(f)) else filter(t)(f)
 }
 
-println(filter(List(4,5,6,7,8))(a=> a % 2 == 0))
+// println(filter(List(4,5,6,7,8))(a=> a % 2 == 0))
+
+def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = as match {
+  case Nil => Nil
+  case Cons(h,t) => concat(f(h),flatMap(t)(f))
+}
+
+
+println(flatMap(List(1,2,3))(i => List(i,i)))
+
