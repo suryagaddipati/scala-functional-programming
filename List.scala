@@ -74,6 +74,14 @@ def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = {
 def reverse[A](l: List[A]): List[A]  = foldLeft(l, Nil:List[A])((t, h) => Cons(h,t))
 // println(reverse(List(1,2,3)))
 
-def append[A](l: List[A],i : A): List[A]  = foldLeft(l, List(i))((t, h) => Cons(h,t)) 
+def append[A](l: List[A],i : A): List[A]  = foldRight(l, List(i))((h,t) => Cons(h,t)) 
 
-println(append(List(1,2,3),4))
+// println(append(List(1,2,3),4))
+
+def concat[A](a: List[A],b: List[A]): List[A]  = b match {
+   case Nil => a
+   case Cons(h,t) => concat(append(a,h),t)
+}
+println(concat(List(1,2,3),List(4,5,6)))
+
+
