@@ -95,4 +95,13 @@ def toString(l: List[Double]): List[String] = l match {
   case Nil => Nil
   case Cons(h,t) => Cons(h.toString,toString(t))
 }
-println(toString(List(1,2,3)))
+// println(toString(List(1,2,3)))
+//
+
+
+def map[A,B](as: List[A])(f: A => B): List[B] =   as match{
+  case Nil => Nil
+  case Cons(h,t) => Cons(f(h),map(t)(f))
+}
+
+println(map(List(1,2,3))(a => a +1))
