@@ -89,5 +89,10 @@ def addOne(l: List[Int]): List[Int] = l match {
   case Cons(h,t) => Cons(h+1,addOne(t))
 }
 
-println(addOne(List(1,2,3)))
+// println(addOne(List(1,2,3)))
 
+def toString(l: List[Double]): List[String] = l match {
+  case Nil => Nil
+  case Cons(h,t) => Cons(h.toString,toString(t))
+}
+println(toString(List(1,2,3)))
