@@ -82,6 +82,12 @@ def concat[A](a: List[A],b: List[A]): List[A]  = b match {
    case Nil => a
    case Cons(h,t) => concat(append(a,h),t)
 }
-println(concat(List(1,2,3),List(4,5,6)))
+// println(concat(List(1,2,3),List(4,5,6)))
 
+def addOne(l: List[Int]): List[Int] = l match {
+  case Nil => Nil
+  case Cons(h,t) => Cons(h+1,addOne(t))
+}
+
+println(addOne(List(1,2,3)))
 
