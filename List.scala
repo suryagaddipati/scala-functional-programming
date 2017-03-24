@@ -104,4 +104,12 @@ def map[A,B](as: List[A])(f: A => B): List[B] =   as match{
   case Cons(h,t) => Cons(f(h),map(t)(f))
 }
 
-println(map(List(1,2,3))(a => a +1))
+// println(map(List(1,2,3))(a => a +1))
+
+
+def filter[A](as: List[A])(f: A => Boolean): List[A] = as match{
+  case Nil => Nil
+  case Cons(h,t) => if(f(h)) Cons(h,filter(t)(f)) else filter(t)(f)
+}
+
+println(filter(List(4,5,6,7,8))(a=> a % 2 == 0))
