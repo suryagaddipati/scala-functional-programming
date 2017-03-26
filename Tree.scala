@@ -26,5 +26,13 @@ def map[A,B](t: Tree[A])(f: A => B) : Tree[B] = t match {
   case Leaf(v) => Leaf(f(v))
   case Branch(l,r) => Branch(map(l)(f),map(r)(f)) 
 }
-println(map(Branch(Leaf(1), Leaf(2)))(_+1))
+// println(map(Branch(Leaf(1), Leaf(2)))(_+1))
 
+def fold[A,B](t:Tree[A])(f1: A => B)(f2: (B,B) => B): B =  t match {
+  case Leaf(v) => f1(v)
+  case Branch(l,r) => f2(fold(l)(f1)(f2),  fold(r)(f1)(f2))
+}
+
+
+def maximumViaFold(t: Tree[Int]): Int = fold(t)(a => a)(_ max _)
+println(maximumViaFold(Branch(Leaf(1),Branch(Leaf(2), Leaf(3)))))
