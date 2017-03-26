@@ -126,13 +126,20 @@ def filterFlatMap[A](as: List[A])(f: A => Boolean): List[A] =  flatMap(as)(i => 
 
 // println(filter(List(4,5,6,7,8))(a=> a % 2 == 0))
 
-def add(a: List[Int] , b: List[Int]): List[Int] = reverse(a match {
+def add(a: List[Int] , b: List[Int]): List[Int] = a match {
   case Nil => Nil
   case Cons(ah,at) => b match {
    case Nil => Nil
-   case Cons(bh,bt) =>  append(add(at,bt), ah + bh)
+   case Cons(bh,bt) =>  Cons( ah + bh,add(at,bt))
   }
-})
+}
 
-println(add(List(1,2,3), List(1,2,3)))
+// println(add(List(1,2,3), List(1,2,3)))
 
+def zipWith[A,B,C](a: List[A] , b: List[B])(f: (A,B) => C): List[C] =  (a,b) match {
+  case (Nil, _) => Nil
+  case (_, Nil) => Nil
+  case(Cons(ha,ta), Cons(hb,tb)) => Cons(f(ha,hb),zipWith(ta,tb)(f))
+  
+}
+println(zipWith(List(1,2,3), List(1,2,3))(_+_))
