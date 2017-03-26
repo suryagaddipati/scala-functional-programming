@@ -1,4 +1,4 @@
-trait List[+A]
+sealed trait List[+A]
 case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
@@ -44,6 +44,7 @@ def dropWhile[A](l: List[A], f: A => Boolean): List[A] =
 // println(dropWhile(List(4,5,6,7,8),(a: Int)=> a % 2 == 0))
 
 def init[A](l: List[A]): List[A] = l match{
+  case Nil => Nil
   case Cons(_,Nil) => Nil
   case Cons(h,t) => Cons(h, init(t))
 }
@@ -142,4 +143,6 @@ def zipWith[A,B,C](a: List[A] , b: List[B])(f: (A,B) => C): List[C] =  (a,b) mat
   case(Cons(ha,ta), Cons(hb,tb)) => Cons(f(ha,hb),zipWith(ta,tb)(f))
   
 }
-println(zipWith(List(1,2,3), List(1,2,3))(_+_))
+// println(zipWith(List(1,2,3), List(1,2,3))(_+_))
+
+
