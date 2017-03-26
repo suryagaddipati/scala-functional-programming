@@ -145,4 +145,14 @@ def zipWith[A,B,C](a: List[A] , b: List[B])(f: (A,B) => C): List[C] =  (a,b) mat
 }
 // println(zipWith(List(1,2,3), List(1,2,3))(_+_))
 
+def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
+  case Nil => true
+  case Cons(hSup,tSup) => sub match{
+    case Nil => true
+    case Cons(hSub,tSub) =>  hSub== hSup && hasSubsequence(tSup,tSub)
+  }
+}
+
+println(hasSubsequence(List(1,2,3,4),List(1,2)))
+println(hasSubsequence(List(1,2,3,4),List(1,4)))
 
