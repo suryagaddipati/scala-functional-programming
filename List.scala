@@ -116,7 +116,7 @@ def filter[A](as: List[A])(f: A => Boolean): List[A] = as match{
 
 def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = as match {
   case Nil => Nil
-  case Cons(h,t) => if(f(h) == Nil) flatMap(t)(f) else concat(f(h),flatMap(t)(f))
+  case Cons(h,t) => concat(f(h),flatMap(t)(f))
 }
 
 // println(flatMap(List(1,2,3))(i => List(i,i)))
