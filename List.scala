@@ -124,5 +124,15 @@ def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = as match {
 def filterFlatMap[A](as: List[A])(f: A => Boolean): List[A] =  flatMap(as)(i => if(f(i)) List(i) else Nil)
 
 
-println(filter(List(4,5,6,7,8))(a=> a % 2 == 0))
+// println(filter(List(4,5,6,7,8))(a=> a % 2 == 0))
+
+def add(a: List[Int] , b: List[Int]): List[Int] = reverse(a match {
+  case Nil => Nil
+  case Cons(ah,at) => b match {
+   case Nil => Nil
+   case Cons(bh,bt) =>  append(add(at,bt), ah + bh)
+  }
+})
+
+println(add(List(1,2,3), List(1,2,3)))
 
