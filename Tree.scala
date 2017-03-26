@@ -15,4 +15,11 @@ def maximum(t: Tree[Int]): Int = t match {
   case Branch(l,r) => maximum(l).max(maximum(r)) 
 }
 
-println(maximum(Branch(Leaf(1),Branch(Leaf(2), Leaf(3)))))
+// println(maximum(Branch(Leaf(1),Branch(Leaf(2), Leaf(3)))))
+
+def depth[A](t: Tree[A]): Int = t match {
+  case Leaf(v) => 0
+  case Branch(l,r) => (depth(l)+1).max(depth(r)+1) 
+}
+println(depth(Branch(Branch(Leaf(2), Leaf(3)),Branch(Branch(Leaf(2),Leaf(4)), Leaf(3)))))
+println(depth(Branch(Leaf(2),Branch(Leaf(2), Leaf(3)))))
