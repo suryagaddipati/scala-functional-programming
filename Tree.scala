@@ -7,4 +7,12 @@ def size[A](t: Tree[A]): Int = t match {
   case Branch(l,r) => size(l) + size(r)
 }
 
-println(size(Branch(Leaf(1), Leaf(1))))
+// println(size(Branch(Leaf(1), Leaf(1))))
+
+
+def maximum(t: Tree[Int]): Int = t match {
+  case Leaf(v) => v
+  case Branch(l,r) => maximum(l).max(maximum(r)) 
+}
+
+println(maximum(Branch(Leaf(1),Branch(Leaf(2), Leaf(3)))))
