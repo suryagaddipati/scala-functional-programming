@@ -37,3 +37,20 @@ def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = (a,b) m
   case(_,None) => None
   case(Some(a),Some(b)) => Some(f(a,b))
 }
+def map2_1[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = a.flatMap(aa =>{
+  b.map( bb => {
+    f(aa,bb)
+  })
+})
+
+//If the original list contains None even once, the result of the function should be None
+// def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
+//   case Nil => Some(Nil)
+//   case h :: t =>  h match {
+//     case None => None
+//     case Some(x) => Some(List(x,sequence(t)))
+//   }
+// }
+// println(sequence( List(Some(1),Some(2))))
+// println(sequence( List(Some(1),None)))
+
