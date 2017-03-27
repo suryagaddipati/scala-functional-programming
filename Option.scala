@@ -29,4 +29,11 @@ case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
 
 def mean(xs: Seq[Double]): Option[Double] = if (xs.isEmpty) None else Some(xs.sum / xs.length)
-def variance(xs: Seq[Double]): Option[Double] = mean(xs).flatMap( m => mean(xs.map(math.pow(x - m, 2))))
+def variance(xs: Seq[Double]): Option[Double] = mean(xs).flatMap( m => mean(xs.map(x => math.pow(x - m, 2))))
+
+//if either Option value is None, then the return value is too. 
+def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = (a,b) match{
+  case(None,_) => None
+  case(_,None) => None
+  case(Some(a),Some(b)) => Some(f(a,b))
+}
