@@ -13,6 +13,8 @@ sealed trait Either[+E, +A]{
    }
   def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] =for { a <- this; b1 <- b } yield f(a,b1) 
 }
+case class Left[+E](value: E) extends Either[E, Nothing] 
+case class Right[+A](value: A) extends Either[Nothing, A]
 
 //should return the first error that’s encountered, if there is one.
 def sequence[E, A](es: List[Either[E, A]]): Either[E, List[A]] = es match {
@@ -25,8 +27,10 @@ def sequence[E, A](es: List[Either[E, A]]): Either[E, List[A]] = es match {
     }
   }
 }
-println(sequence(List(Right("meow"),Right("purr"))))
-println(sequence(List(Right("meow"),Left("woof"))))
+def sequence_1[E, A](es: List[Either[E, A]]): Either[E, List[A]] = es match {
+  case  Nil => Right(Nil)
+  case h :: t => h.flatMap(hval => sequence(t).map(tList => hval:: tList))
+}
+println(sequence_1(List(Right("meow"),Right("purr"))))
+println(sequence_1(List(Right("meow"),Left("woof"))))
 
-case class Left[+E](value: E) extends Either[E, Nothing] 
-case class Right[+A](value: A) extends Either[Nothing, A]
