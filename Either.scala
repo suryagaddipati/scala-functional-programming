@@ -31,6 +31,15 @@ def sequence_1[E, A](es: List[Either[E, A]]): Either[E, List[A]] = es match {
   case  Nil => Right(Nil)
   case h :: t => h.flatMap(hval => sequence(t).map(tList => hval:: tList))
 }
-println(sequence_1(List(Right("meow"),Right("purr"))))
-println(sequence_1(List(Right("meow"),Left("woof"))))
+// println(sequence_1(List(Right("meow"),Right("purr"))))
+// println(sequence_1(List(Right("meow"),Left("woof"))))
 
+
+//should return the first error that’s encountered, if there is one.
+def traverse[E, A, B](as: List[A])( f: A => Either[E, B]): Either[E, List[B]]= as match {
+  case  Nil => Right(Nil)
+  case h :: t => f(h).flatMap( hh =>  traverse(t)(f).map(tList => hh :: tList))
+}
+
+println(traverse(List(1,2,3))(num => Right(num) ))
+println(traverse(List(1,2,3))(num => if(num%2 ==0)Left("meow") else Right(num+2)))
