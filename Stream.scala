@@ -1,6 +1,5 @@
 import Stream._
 sealed trait Stream[+A]{
-    @annotation.tailrec
     def toList: List[A] = this match {
       case Empty => List.empty
       case Cons(h,t) => h() :: t().toList
