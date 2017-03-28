@@ -35,6 +35,7 @@ sealed trait Stream[+A]{
     case Empty => None
     case Cons(h, t) => Some(h())
   }
+  def map[B](f: A => B): Stream[B] =  foldRight[Stream[B]](Empty)((a,cStream)=> cons(f(a),cStream))
   def headOptionViaFoldRight : Option[A] =  foldRight[Option[A]](None)((a,option) => option match {
      case None => Some(a)
      case Some(x) => Some(a)
@@ -66,6 +67,7 @@ object Stream {
 // println(Stream(2,4,8).forAll(_ %2 ==0))
 // println(Stream(2,4,7,8).takeWhileViaFoldRight(_%2 == 0).toList)
  // println(Stream(2,4,8).headOption)
- println(Stream(2,4,8).headOptionViaFoldRight)
+ // println(Stream(2,4,8).headOptionViaFoldRight)
+ println(Stream(2,4,8).map(_ + 2).toList)
 
 
