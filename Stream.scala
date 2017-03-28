@@ -1,8 +1,18 @@
 import Stream._
 sealed trait Stream[+A]{
+
     def toList: List[A] = this match {
       case Empty => List.empty
       case Cons(h,t) => h() :: t().toList
+    }
+
+    def take(n: Int): List[A] =   {
+      @annotation.tailrec
+      def go(c: List[A], s: Stream[A]): List[A] = if(c.size == n) c else s match {
+        case Empty => List.empty
+        case Cons(h,t) => go(c :+ h(),t())
+      }
+      go(List.empty,this)
     }
 }
 case object Empty extends Stream[Nothing]
@@ -23,4 +33,6 @@ object Stream {
 }
 
 
-println(Stream(1,2).toList)
+// println(Stream(1,2).toList)
+println(Stream(1,2,3,4).take(3))
+
