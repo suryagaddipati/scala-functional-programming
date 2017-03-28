@@ -1,28 +1,36 @@
 import Stream._
 sealed trait Stream[+A]{
+  def toList: List[A] = this match {
+    case Empty => List.empty
+    case Cons(h,t) => h() :: t().toList
+  }
 
-    def toList: List[A] = this match {
+  def take(n: Int): List[A] =   {
+    @annotation.tailrec
+    def go(c: List[A], s: Stream[A]): List[A] = if(c.size == n) c else s match {
       case Empty => List.empty
-      case Cons(h,t) => h() :: t().toList
+      case Cons(h,t) => go(c :+ h(),t())
     }
+    go(List.empty,this)
+  }
 
-    def take(n: Int): List[A] =   {
-      @annotation.tailrec
-      def go(c: List[A], s: Stream[A]): List[A] = if(c.size == n) c else s match {
-        case Empty => List.empty
-        case Cons(h,t) => go(c :+ h(),t())
-      }
-      go(List.empty,this)
-    }
+  def takeWhile(p: A => Boolean): Stream[A] = this match{
+    case Cons(h,t) if(p(h())) =>  Cons(h,() => t().takeWhile(p))
+    case _ => Empty 
+  }
 
-    def takeWhile(p: A => Boolean): Stream[A] = this match{
-      case Cons(h,t) if(p(h())) =>  Cons(h,() => t().takeWhile(p))
-        case _ => Empty 
-    }
-    def forAll(p: A => Boolean): Boolean =  this match {
-      case Empty => true
-      case Cons(h,t) => p(h()) && t().forAll(p)
-    }
+  def forAll(p: A => Boolean): Boolean =  this match {
+    case Empty => true
+    case Cons(h,t) => p(h()) && t().forAll(p)
+  }
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+    case Cons(h,t) => f(h(), t().foldRight(z)(f)) 
+    case _ => z
+  }
+
+  def takeWhileViaFoldRight(p: A => Boolean): Stream[A] = foldRight[Stream[A]](empty)((a,list) => if(p(a)) cons(a,list) else empty)
+
 }
 
 case object Empty extends Stream[Nothing]
@@ -46,6 +54,7 @@ object Stream {
 // println(Stream(1,2).toList)
 // println(Stream(1,2,3,4).take(3))
 // println(Stream(2,4,7,8).takeWhile(_%2 == 0).toList)
-println(Stream(2,4,7,8).forAll(_ %2 ==0))
-println(Stream(2,4,8).forAll(_ %2 ==0))
+// println(Stream(2,4,7,8).forAll(_ %2 ==0))
+// println(Stream(2,4,8).forAll(_ %2 ==0))
+println(Stream(2,4,7,8).takeWhileViaFoldRight(_%2 == 0).toList)
 
