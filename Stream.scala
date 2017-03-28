@@ -31,6 +31,14 @@ sealed trait Stream[+A]{
 
   def takeWhileViaFoldRight(p: A => Boolean): Stream[A] = foldRight[Stream[A]](empty)((a,list) => if(p(a)) cons(a,list) else empty)
 
+  def headOption: Option[A] = this match { 
+    case Empty => None
+    case Cons(h, t) => Some(h())
+  }
+  def headOptionViaFoldRight : Option[A] =  foldRight[Option[A]](None)((a,option) => option match {
+     case None => Some(a)
+     case Some(x) => Some(a)
+  })
 }
 
 case object Empty extends Stream[Nothing]
@@ -56,5 +64,8 @@ object Stream {
 // println(Stream(2,4,7,8).takeWhile(_%2 == 0).toList)
 // println(Stream(2,4,7,8).forAll(_ %2 ==0))
 // println(Stream(2,4,8).forAll(_ %2 ==0))
-println(Stream(2,4,7,8).takeWhileViaFoldRight(_%2 == 0).toList)
+// println(Stream(2,4,7,8).takeWhileViaFoldRight(_%2 == 0).toList)
+ // println(Stream(2,4,8).headOption)
+ println(Stream(2,4,8).headOptionViaFoldRight)
+
 
