@@ -44,6 +44,15 @@ sealed trait Stream[+A]{
      case None => Some(a)
      case Some(x) => Some(a)
   })
+
+  def startsWith[A](s: Stream[A]): Boolean = s match {
+    case Empty => true
+    case Cons(h,t) => this match {
+      case Empty => false
+      case Cons(thisH,thisT) =>  thisH() == h() && thisT().startsWith( t())
+    }
+  }
+
 }
 
 case object Empty extends Stream[Nothing]
@@ -58,10 +67,28 @@ object Stream {
 
   def empty[A]: Stream[A] = Empty
 
+
   def apply[A](as: A*): Stream[A] =
     if (as.isEmpty) empty
     else cons(as.head, apply(as.tail: _*))
+
 }
+    
+ println(Stream(1,2,3).startsWith(Stream(1,2)))
+ println(Stream(1,2,3,4).startsWith(Stream(1,2,3)))
+ println(Stream(1,2,3,4).startsWith(Stream(2,3)))
+
+// println(Stream(1,2).toList)
+// println(Stream(1,2,3,4).take(3))
+// println(Stream(2,4,7,8).takeWhile(_%2 == 0).toList)
+// println(Stream(2,4,7,8).forAll(_ %2 ==0))
+// println(Stream(2,4,8).forAll(_ %2 ==0))
+// println(Stream(2,4,7,8).takeWhileViaFoldRight(_%2 == 0).toList)
+ // println(Stream(2,4,8).headOption)
+ // println(Stream(2,4,8).headOptionViaFoldRight)
+ // println(Stream(2,4,8).map(_ + 2).toList)
+ // println(Stream(2,4,8).append(Stream(22,343)).toList)
+
 
 def constant[A](a: A): Stream[A] = cons(a,constant(a))
 // println(constant(3).take(5).toList)
@@ -92,17 +119,5 @@ def zipWith[A,B,C](a: Stream[A] , b: Stream[B])(f: (A,B) => C): Stream[C] = unfo
   case _ => None
 })
 
-println(zipWith(Stream(1,2,3), Stream(1,2,3))(_+_).toList)
-
-    
-// println(Stream(1,2).toList)
-// println(Stream(1,2,3,4).take(3))
-// println(Stream(2,4,7,8).takeWhile(_%2 == 0).toList)
-// println(Stream(2,4,7,8).forAll(_ %2 ==0))
-// println(Stream(2,4,8).forAll(_ %2 ==0))
-// println(Stream(2,4,7,8).takeWhileViaFoldRight(_%2 == 0).toList)
- // println(Stream(2,4,8).headOption)
- // println(Stream(2,4,8).headOptionViaFoldRight)
- // println(Stream(2,4,8).map(_ + 2).toList)
- // println(Stream(2,4,8).append(Stream(22,343)).toList)
+// println(zipWith(Stream(1,2,3), Stream(1,2,3))(_+_).toList)
 
