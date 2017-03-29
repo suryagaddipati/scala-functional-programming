@@ -76,7 +76,14 @@ def fibs:Stream[Int] = {
 // println(fibs.take(7).toList)
  
 def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = cons(f(z).get._1,unfold(f(z).get._2)(f)) 
-println( unfold(1)( a => Some(a.toString,a+10)).take(6).toList)
+// println( unfold(1)( a => Some(a.toString,a+10)).take(6).toList)
+
+def fibsViaUnfold:Stream[Int] = unfold((0,1))(a => Some(a._1, (a._2, a._1+a._2)))
+// println(fibsViaUnfold.take(7).toList)
+
+def constantViaUnfold[A](a: A): Stream[A] = unfold(a) (a => Some(a, a))
+println(constantViaUnfold(3).take(5).toList)
+
     
 // println(Stream(1,2).toList)
 // println(Stream(1,2,3,4).take(3))
