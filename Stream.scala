@@ -53,6 +53,11 @@ sealed trait Stream[+A]{
     }
   }
 
+  def tails: Stream[Stream[A]] = unfold(this)(stream => stream match{
+    case Empty => None
+    case Cons(h,t) => Some(stream,t())
+  })
+
 }
 
 case object Empty extends Stream[Nothing]
@@ -73,10 +78,10 @@ object Stream {
     else cons(as.head, apply(as.tail: _*))
 
 }
-    
- println(Stream(1,2,3).startsWith(Stream(1,2)))
- println(Stream(1,2,3,4).startsWith(Stream(1,2,3)))
- println(Stream(1,2,3,4).startsWith(Stream(2,3)))
+ println( Stream(1,2,3).tails.toList.map(_.toList))    
+ // println(Stream(1,2,3).startsWith(Stream(1,2)))
+ // println(Stream(1,2,3,4).startsWith(Stream(1,2,3)))
+ // println(Stream(1,2,3,4).startsWith(Stream(2,3)))
 
 // println(Stream(1,2).toList)
 // println(Stream(1,2,3,4).take(3))
