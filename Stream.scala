@@ -75,14 +75,24 @@ def fibs:Stream[Int] = {
 }
 // println(fibs.take(7).toList)
  
-def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = cons(f(z).get._1,unfold(f(z).get._2)(f)) 
+def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = f(z).map( a => cons(a._1,unfold(a._2)(f)) ) match {
+  case Some(x) => x
+  case None => Empty 
+}
 // println( unfold(1)( a => Some(a.toString,a+10)).take(6).toList)
 
 def fibsViaUnfold:Stream[Int] = unfold((0,1))(a => Some(a._1, (a._2, a._1+a._2)))
 // println(fibsViaUnfold.take(7).toList)
 
 def constantViaUnfold[A](a: A): Stream[A] = unfold(a) (a => Some(a, a))
-println(constantViaUnfold(3).take(5).toList)
+// println(constantViaUnfold(3).take(5).toList)
+
+def zipWith[A,B,C](a: Stream[A] , b: Stream[B])(f: (A,B) => C): Stream[C] = unfold((a,b)) ( a => (a._1, a._2) match {
+  case( Cons(ha,ta),Cons(hb,tb)) => Some(f(ha(),hb()), (ta(),tb()))
+  case _ => None
+})
+
+println(zipWith(Stream(1,2,3), Stream(1,2,3))(_+_).toList)
 
     
 // println(Stream(1,2).toList)
