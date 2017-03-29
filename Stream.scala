@@ -66,6 +66,12 @@ object Stream {
 def constant[A](a: A): Stream[A] = cons(a,constant(a))
 
 def from(n: Int): Stream[Int] = cons(n,from(n+1))
+
+def fibs:Stream[Int] = {
+    def go(n1: Int , n2: Int): Stream[Int] = cons(n1,go(n2,n1+n2))
+    go(0,1)
+}
+    
 // println(Stream(1,2).toList)
 // println(Stream(1,2,3,4).take(3))
 // println(Stream(2,4,7,8).takeWhile(_%2 == 0).toList)
@@ -77,5 +83,6 @@ def from(n: Int): Stream[Int] = cons(n,from(n+1))
  // println(Stream(2,4,8).map(_ + 2).toList)
  // println(Stream(2,4,8).append(Stream(22,343)).toList)
  // println(constant(3).take(5).toList)
- println(from(3).take(5).toList)
+ // println(from(3).take(5).toList)
+ println(fibs.take(7).toList)
 
