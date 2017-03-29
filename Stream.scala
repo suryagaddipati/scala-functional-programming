@@ -8,7 +8,7 @@ sealed trait Stream[+A]{
   def take(n: Int): List[A] =   {
     @annotation.tailrec
     def go(c: List[A], s: Stream[A]): List[A] = if(c.size == n) c else s match {
-      case Empty => List.empty
+      case Empty => c 
       case Cons(h,t) => go(c :+ h(),t())
     }
     go(List.empty,this)
@@ -64,13 +64,19 @@ object Stream {
 }
 
 def constant[A](a: A): Stream[A] = cons(a,constant(a))
+// println(constant(3).take(5).toList)
 
 def from(n: Int): Stream[Int] = cons(n,from(n+1))
+// println(from(3).take(5).toList)
 
 def fibs:Stream[Int] = {
     def go(n1: Int , n2: Int): Stream[Int] = cons(n1,go(n2,n1+n2))
     go(0,1)
 }
+// println(fibs.take(7).toList)
+ 
+def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = cons(f(z).get._1,unfold(f(z).get._2)(f)) 
+println( unfold(1)( a => Some(a.toString,a+10)).take(6).toList)
     
 // println(Stream(1,2).toList)
 // println(Stream(1,2,3,4).take(3))
@@ -82,7 +88,4 @@ def fibs:Stream[Int] = {
  // println(Stream(2,4,8).headOptionViaFoldRight)
  // println(Stream(2,4,8).map(_ + 2).toList)
  // println(Stream(2,4,8).append(Stream(22,343)).toList)
- // println(constant(3).take(5).toList)
- // println(from(3).take(5).toList)
- println(fibs.take(7).toList)
 
