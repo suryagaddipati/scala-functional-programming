@@ -63,7 +63,7 @@ object Stream {
     else cons(as.head, apply(as.tail: _*))
 }
 
-
+def constant[A](a: A): Stream[A] = cons(a,constant(a))
 // println(Stream(1,2).toList)
 // println(Stream(1,2,3,4).take(3))
 // println(Stream(2,4,7,8).takeWhile(_%2 == 0).toList)
@@ -73,6 +73,6 @@ object Stream {
  // println(Stream(2,4,8).headOption)
  // println(Stream(2,4,8).headOptionViaFoldRight)
  // println(Stream(2,4,8).map(_ + 2).toList)
-
- println(Stream(2,4,8).append(Stream(22,343)).toList)
+ // println(Stream(2,4,8).append(Stream(22,343)).toList)
+ // println(constant(3).take(5).toList)
 
