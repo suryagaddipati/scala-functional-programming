@@ -19,5 +19,17 @@ def nonNegativeInt(rng: RNG): (Int, RNG) = rng.nextInt match{
   case (i , nRng) if( i < 0) => (-(i + 1), nRng)
   case (i,nRng) => (i,nRng)
 }
+// println(nonNegativeInt(Simple(1))._1)
 
-println(nonNegativeInt(Simple(1))._1)
+def ints(count: Int)(rng: RNG): (List[Int], RNG)  = count match {
+   case 0 => (Nil,rng)
+   case _ => {
+     val (l,nRng) =rng.nextInt 
+     val (nextL, nnRng) = ints(count-1)(nRng)
+     ((l :: nextL),nnRng)
+   }
+}
+
+
+println(ints(5)(Simple(1))._1)
+
