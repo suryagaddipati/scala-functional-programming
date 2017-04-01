@@ -48,6 +48,11 @@ def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =  fs match {
   case h :: t => (rng => {
     val (headValue,nRng) = h(rng)
     val (tailListValues, nnRng)=sequence(t)(nRng)
-    (tailListValues, nnRng)
+    (headValue::tailListValues, nnRng)
   })
 }
+
+
+def intsViaSequence(count: Int)(rng: RNG): (List[Int], RNG)  = sequence( List.fill(count)(((r: RNG) => r.nextInt)) )(rng)
+println(intsViaSequence(5)(Simple(1))._1)
+
