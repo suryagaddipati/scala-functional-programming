@@ -16,3 +16,5 @@ env(x) == 5
 
 7. smart constructors  
 
+8. type Rand[+A] = RNG => (A, RNG) <-- type aliases
+

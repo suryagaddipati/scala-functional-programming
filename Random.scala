@@ -31,5 +31,15 @@ def ints(count: Int)(rng: RNG): (List[Int], RNG)  = count match {
 }
 
 
-println(ints(5)(Simple(1))._1)
+// println(ints(5)(Simple(1))._1)
+
+type Rand[A] = RNG => (A,RNG)
+
+def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =  {
+  seedRng: RNG => {
+     val (a,rNext) = ra(seedRng)
+     val (b,rNext1) = rb(rNext)
+     (f(a,b), rNext1)
+  }
+}
 
