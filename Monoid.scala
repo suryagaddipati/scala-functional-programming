@@ -24,8 +24,11 @@ object Monoids {
   def foldLeft[A,B](as: List[A], i: B)(f: (B,A) => B): B =  {
     val aTob = {a: A => {b: B => f(b,a)}  }
     foldMap(as,endoMonoid[B] ) (aTob) (i)
-
-  
   }
+
+  def foldMapV[A,B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): B = if(v.length > 2) {
+    val (h1, h2) = v.splitAt(v.length/2) 
+    m.op( foldMapV(h1,m)(f) ,  foldMapV(h2,m)(f))
+  } else v.map(f).foldLeft(m.zero)(m.op)
 }
 
